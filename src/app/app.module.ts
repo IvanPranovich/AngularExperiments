@@ -4,15 +4,17 @@ import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { TableDemonstrationComponent } from './table-demonstration/table-demonstration.component';
+import { TableModule } from 'my-widgets';
 
 @NgModule({
   declarations: [
     AppComponent,
-    TableDemonstrationComponent
+    TableDemonstrationComponent,
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    TableModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
