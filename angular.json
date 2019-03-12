@@ -129,6 +129,41 @@
           }
         }
       }
+    },
+    "my-widgets": {
+      "root": "projects/my-widgets",
+      "sourceRoot": "projects/my-widgets/src",
+      "projectType": "library",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/my-widgets/tsconfig.lib.json",
+            "project": "projects/my-widgets/ng-package.json"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/my-widgets/src/test.ts",
+            "tsConfig": "projects/my-widgets/tsconfig.spec.json",
+            "karmaConfig": "projects/my-widgets/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/my-widgets/tsconfig.lib.json",
+              "projects/my-widgets/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
     }
   },
   "defaultProject": "angular-experiments-app"
