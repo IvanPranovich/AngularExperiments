@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AircraftScheduleService } from '../data-services/aircraft-schedule.service';
 
 @Component({
   selector: 'app-table-demonstration',
@@ -6,10 +7,17 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./table-demonstration.component.css']
 })
 export class TableDemonstrationComponent implements OnInit {
+  aircraftSchedules: AircraftScheduleModels.AircraftScheduleModel[] = [];
 
-  constructor() { }
+  constructor(private aircraftScheduleService: AircraftScheduleService) { }
 
   ngOnInit() {
+    this.aircraftScheduleService.getAircraftSchedules();
+  }
+
+  getAircraftSchedules(): void {
+    this.aircraftScheduleService.getAircraftSchedules()
+      .subscribe(aircraftSchedules => this.aircraftSchedules = aircraftSchedules);
   }
 
 }
