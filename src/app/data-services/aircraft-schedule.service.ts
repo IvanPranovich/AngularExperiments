@@ -4,24 +4,24 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { catchError, map, tap } from 'rxjs/operators';
 import { LoggerService } from '../shared/logger.service';
 import { Logger } from 'typescript-logging';
+import { AircraftScheduleProxy } from './aircraft-schedule';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AircraftScheduleService {
-  private aircraftScheduleUrl = 'api/aircraftschedule';
+  private aircraftScheduleUrl = 'api/aircraftschedules';
   private logger: Logger;
 
   constructor(private http: HttpClient, private loggerFactory: LoggerService) {
     this.logger = loggerFactory.getLogger(AircraftScheduleService.name);
-    this.logger.info('started!!!!');
   }
 
-  getAircraftSchedules(): Observable<AircraftScheduleModels.AircraftScheduleModel[]> {
-    return this.http.get<AircraftScheduleModels.AircraftScheduleModel[]>(this.aircraftScheduleUrl)
+  getAircraftSchedules (): Observable<AircraftScheduleProxy[]> {
+    return this.http.get<AircraftScheduleProxy[]>(this.aircraftScheduleUrl)
       .pipe(
-        tap(model => this.logIncomingData(model),
-        catchError(this.handleError<AircraftScheduleModels.AircraftScheduleModel>('getAircraftSchedules'))));
+        tap(_ => this.logIncomingData(_)),
+        catchError(this.handleError('getAircraftSchedules', [])));
   }
 
   private logIncomingData(model: any): void {
