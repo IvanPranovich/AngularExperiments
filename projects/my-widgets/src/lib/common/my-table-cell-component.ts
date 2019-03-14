@@ -10,6 +10,7 @@ export class MyTableCellComponent implements OnChanges {
     }
 
     @Input() initialValue: any;
+    @Input() isReadOnly: boolean;
     @Output() valueChange = new EventEmitter();
 
     private _currentValue: any;

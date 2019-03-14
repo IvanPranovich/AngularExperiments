@@ -11,10 +11,10 @@
         <div *ngIf="isEditMode">
           <div [ngSwitch]="column.cellType">
             <div *ngSwitchCase="'checkbox'">
-              <lib-my-checkbox [initialValue]="row[colNumber]" (valueChange)='cellValueChanged(rowNumber, colNumber, $event)' ></lib-my-checkbox>
+              <lib-my-checkbox [initialValue]="row[colNumber]" (valueChange)='cellValueChanged(rowNumber, colNumber, $event)' [isReadOnly]='column.isReadOnly'></lib-my-checkbox>
             </div>
             <div *ngSwitchCase="'text'">
-              <lib-my-text [initialValue]="row[colNumber]" (valueChange)='cellValueChanged(rowNumber, colNumber, $event)' ></lib-my-text>
+              <lib-my-text [initialValue]="row[colNumber]" (valueChange)='cellValueChanged(rowNumber, colNumber, $event)' [isReadOnly]='column.isReadOnly'></lib-my-text>
             </div>
             <div *ngSwitchDefault>{{row[colNumber]}}</div>
           </div>
