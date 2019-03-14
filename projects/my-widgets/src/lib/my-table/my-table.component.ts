@@ -44,4 +44,7 @@ export class MyTableComponent implements OnInit, OnChanges {
     }
   }
 
+  cellValueChanged(rowNumber: number, colNumber: number, $event: any): void {
+      console.log('TODO: Changed value' +rowNumber + colNumber + $event);
+  }
 }

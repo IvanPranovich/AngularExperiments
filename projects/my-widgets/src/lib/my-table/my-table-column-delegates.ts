@@ -1,1 +1,1 @@
-export type ColumnDataGetter = (data: any)  => any;
+export type ColumnDataGetter = (data: any, index: number)  => any;

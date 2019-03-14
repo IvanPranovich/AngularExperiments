@@ -6,8 +6,18 @@
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let row of rowData">
-      <td *ngFor="let column of columns; let i = index">{{row[i]}}</td>
+    <tr *ngFor="let row of rowData; let rowNumber = index">
+      <td *ngFor="let column of columns; let colNumber = index">
+        <div *ngIf="isEditMode">
+          <div [ngSwitch]="column.cellType">
+            <div *ngSwitchCase="'checkbox'">
+              <lib-my-checkbox [initialValue]="row[colNumber]" (valueChange)='cellValueChanged(rowNumber, colNumber, $event)'></lib-my-checkbox>
+            </div>
+            <div *ngSwitchDefault>TODO</div>
+          </div>
+        </div>
+        <div *ngIf="!isEditMode">{{row[colNumber]}}</div>
+      </td>
     </tr>
   </tbody>
 </table>
