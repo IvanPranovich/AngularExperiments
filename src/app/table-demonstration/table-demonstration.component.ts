@@ -17,7 +17,7 @@ export class TableDemonstrationComponent implements OnInit {
     new MyTableColumn('Use', 'text', (data: AircraftScheduleProxy) => data.registrationNumber),
     new MyTableColumn('Seats c/p', 'text', (data: AircraftScheduleProxy) => data.purposeOfUse.name),
     new MyTableColumn('TLO', 'text', (data: AircraftScheduleProxy) => data.crewSeats + '/' + data.passengerSeats),
-    new MyTableColumn('Hull War', 'text', (data: AircraftScheduleProxy) => data.hullCoverage.hullCoverageEnabled),
+    new MyTableColumn('Hull War', 'checkbox', (data: AircraftScheduleProxy) => data.hullCoverage.hullCoverageEnabled),
     new MyTableColumn('Hull Ccy', 'text', (data: AircraftScheduleProxy) => data.hullCoverage.currency.name),
     new MyTableColumn('Hull Value', 'text', (data: AircraftScheduleProxy) => data.hullCoverage.hullValue),
     new MyTableColumn('TLO Value', 'text', (data: AircraftScheduleProxy) => data.hullCoverage.tloLimit),
