@@ -6,8 +6,8 @@
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let row of dataSource">
-      <td *ngFor="let column of columns">{{ column.cellType }}{{row | json}}</td>
+    <tr *ngFor="let row of rowData">
+      <td *ngFor="let column of columns; let i = index">{{row[i]}}</td>
     </tr>
   </tbody>
 </table>

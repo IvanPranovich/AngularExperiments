@@ -1,0 +1,1 @@
+export type ColumnDataGetter = (data: any)  => any;

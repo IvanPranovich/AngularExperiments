@@ -11,24 +11,25 @@ import { MyTableColumn } from 'projects/my-widgets/src/lib/my-table/my-table-col
 export class TableDemonstrationComponent implements OnInit {
   aircraftSchedules: AircraftScheduleProxy[] = [];
   columns: MyTableColumn[] = [
-    new MyTableColumn('#', 'rowNumber', ''),
-    new MyTableColumn('Reg No', 'text', ''),
-    new MyTableColumn('Make/Model', 'text', ''),
-    new MyTableColumn('Use', 'text', ''),
-    new MyTableColumn('Seats c/p', 'text', ''),
-    new MyTableColumn('TLO', 'text', ''),
-    new MyTableColumn('Hull War', 'text', ''),
-    new MyTableColumn('Hull Ccy', 'text', ''),
-    new MyTableColumn('Hull Value', 'text', ''),
-    new MyTableColumn('TLO Value', 'text', ''),
-    new MyTableColumn('Hull Deduct', 'text', ''),
-    new MyTableColumn('Hull War Deduct', 'text', ''),
-    new MyTableColumn('Liab Ccy', 'text', ''),
-    new MyTableColumn('Liab Limit (CSL/TP/Pax)', 'text', ''),
-    new MyTableColumn('PA Ccy', 'PA Limit (C/Pax)', ''),
-    new MyTableColumn('PA Limit (C/Pax)', 'PA Limit (C/Pax)', ''),
-    new MyTableColumn('AVN 52E Limit', 'PA Limit (C/Pax)', ''),
-    new MyTableColumn('LiabilityDeduct', 'PA Limit (C/Pax)', ''),
+    new MyTableColumn('#', 'rowNumber', (data) => 5),
+    new MyTableColumn('Reg No', 'text', (data: AircraftScheduleProxy) => data.registrationNumber),
+    new MyTableColumn('Make/Model', 'text', (data: AircraftScheduleProxy) => data.aircraftModel.aircraftMake.name),
+    new MyTableColumn('Use', 'text', (data: AircraftScheduleProxy) => data.registrationNumber),
+    new MyTableColumn('Seats c/p', 'text', (data: AircraftScheduleProxy) => data.purposeOfUse.name),
+    new MyTableColumn('TLO', 'text', (data: AircraftScheduleProxy) => data.crewSeats + '/' + data.passengerSeats),
+    new MyTableColumn('Hull War', 'text', (data: AircraftScheduleProxy) => data.hullCoverage.hullCoverageEnabled),
+    new MyTableColumn('Hull Ccy', 'text', (data: AircraftScheduleProxy) => data.hullCoverage.currency.name),
+    new MyTableColumn('Hull Value', 'text', (data: AircraftScheduleProxy) => data.hullCoverage.hullValue),
+    new MyTableColumn('TLO Value', 'text', (data: AircraftScheduleProxy) => data.hullCoverage.tloLimit),
+    new MyTableColumn('Hull Deduct', 'text', (data: AircraftScheduleProxy) => data.hullCoverage.hullDeductibleMonetaryAmount),
+    new MyTableColumn('Hull War Deduct', 'text', (data: AircraftScheduleProxy) => data.hullCoverage.hullDeductiblePercentage),
+    new MyTableColumn('Liab Ccy', 'text', (data: AircraftScheduleProxy) => data.liabilityCoverage.currency.name),
+    new MyTableColumn('Liab Limit (CSL/TP/Pax)', 'text', (data: AircraftScheduleProxy) =>
+      { data.liabilityCoverage.cslLimit, data.liabilityCoverage.thirdPartyLimit, data.liabilityCoverage.passengersLimit }),
+    new MyTableColumn('PA Ccy', 'PA Limit (C/Pax)', (data: AircraftScheduleProxy) => data.personalAccidentCoverage.currency.name),
+    new MyTableColumn('PA Limit (C/Pax)', 'PA Limit (C/Pax)', (data: AircraftScheduleProxy) => data.personalAccidentCoverage.crewLimit + '/' + data.personalAccidentCoverage.passengersLimit),
+    new MyTableColumn('AVN 52E Limit', 'PA Limit (C/Pax)', (data: AircraftScheduleProxy) => data.aircraftModel.deductibleType),
+    new MyTableColumn('LiabilityDeduct', 'PA Limit (C/Pax)', (data: AircraftScheduleProxy) => data.aircraftId),
   ];
 
   constructor(private aircraftScheduleService: AircraftScheduleService) { }
