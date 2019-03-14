@@ -16,6 +16,9 @@
             <div *ngSwitchCase="'text'">
               <lib-my-text [initialValue]="row[colNumber]" (valueChange)='cellValueChanged(rowNumber, colNumber, $event)' [isReadOnly]='column.isReadOnly'></lib-my-text>
             </div>
+            <div *ngSwitchCase="'dropdown'">
+              <lib-my-dropdown [initialValue]="row[colNumber]" (valueChange)='cellValueChanged(rowNumber, colNumber, $event)' [isReadOnly]='column.isReadOnly' [dropdownValues]='column.additionalValues'></lib-my-dropdown>
+            </div>
             <div *ngSwitchDefault>{{row[colNumber]}}</div>
           </div>
         </div>
