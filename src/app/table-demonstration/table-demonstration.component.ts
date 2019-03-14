@@ -31,11 +31,14 @@ export class TableDemonstrationComponent implements OnInit {
     new MyTableColumn('AVN 52E Limit', 'PA Limit (C/Pax)', (data: AircraftScheduleProxy) => data.aircraftModel.deductibleType),
     new MyTableColumn('LiabilityDeduct', 'PA Limit (C/Pax)', (data: AircraftScheduleProxy) => data.aircraftId),
   ];
+  tableMode: string;
+  private _isEditMode = false;
 
   constructor(private aircraftScheduleService: AircraftScheduleService) { }
 
   ngOnInit() {
     this.getAircraftSchedules();
+    this.isEditMode = false;
   }
 
   getAircraftSchedules(): void {
@@ -43,4 +46,22 @@ export class TableDemonstrationComponent implements OnInit {
       .subscribe(aircraftSchedules => this.aircraftSchedules = aircraftSchedules);
   }
 
+  toggleEditMode(): void {
+    this.isEditMode = !this.isEditMode;
+  }
+
+  get isEditMode(): boolean {
+    return this._isEditMode;
+  }
+
+  set isEditMode(newState: boolean)
+  {
+    this._isEditMode = newState;
+    if (this.isEditMode)
+    {
+      this.tableMode = 'Edit Mode';
+    } else {
+      this.tableMode = 'View Mode';
+    }
+  }
 }

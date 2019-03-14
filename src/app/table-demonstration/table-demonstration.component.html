@@ -1,2 +1,3 @@
-<lib-my-table [columns]="columns" [dataSource]="aircraftSchedules"></lib-my-table> 
+<button (click)="toggleEditMode()">{{ tableMode }}</button>
+<lib-my-table [columns]="columns" [dataSource]="aircraftSchedules" [(editMode)]="isEditMode"></lib-my-table> 
 

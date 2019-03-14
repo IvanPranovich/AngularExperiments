@@ -9,6 +9,7 @@ import { MyTableColumn } from './my-table-column';
 export class MyTableComponent implements OnInit, OnChanges {
   @Input() columns: MyTableColumn[];
   @Input() dataSource: any[];
+  @Input() editMode: boolean;
 
   public rowData: any[];
 
@@ -32,6 +33,15 @@ export class MyTableComponent implements OnInit, OnChanges {
       result.push(row);
     }
     return result;
+  }
+
+  getMode(): string {
+    if (this.editMode)
+    {
+      return 'Edit Mode';
+    } else {
+      return 'View Mode';
+    }
   }
 
 }
