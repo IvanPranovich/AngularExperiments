@@ -1,3 +1,13 @@
-<p>
-  my-table works!
-</p>
+<table>
+  <caption>My Super Table</caption>
+  <thead>
+    <tr>
+      <th *ngFor="let column of columns">{{ column.caption }}</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let row of dataSource">
+      <td *ngFor="let column of columns">{{ column.cellType }}{{row | json}}</td>
+    </tr>
+  </tbody>
+</table>
