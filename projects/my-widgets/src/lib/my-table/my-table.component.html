@@ -2,11 +2,19 @@
   <caption><h1>My Super Table in {{ getMode() }}</h1></caption>
   <thead>
     <tr>
-      <th *ngFor="let column of columns">{{ column.caption }}</th>
+      <th *ngFor="let column of columns; let colNumber = index" >
+        <div (click)="toggleSearchBox(colNumber)">{{ column.caption }}</div>
+        <div *ngIf="isSearchCaption[colNumber]"><p><input #searchBox (input)="search(searchBox.value, colNumber)"/></p></div>
+      </th>
     </tr>
+    <!-- <tr>
+      <th *ngFor="let column of columns; let colNumber = index">
+        <input type="checkbox" checked/>
+      </th>
+    </tr> -->
   </thead>
   <tbody>
-    <tr *ngFor="let row of rowData; let rowNumber = index">
+    <tr *ngFor="let row of displayRowData$ | async; let rowNumber = index">
       <td *ngFor="let column of columns; let colNumber = index">
         <lib-my-table-cell 
           [cellType]="column.cellType" 
