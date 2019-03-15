@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { MyTableCellComponent } from '../common/my-table-cell-component';
+import { MyTableCommonCell } from '../common/my-table-common-cell';
 
 @Component({
   selector: 'lib-my-text',
   templateUrl: './my-text.component.html',
   styleUrls: ['./my-text.component.css']
 })
-export class MyTextComponent extends MyTableCellComponent implements OnInit {
+export class MyTextComponent extends MyTableCommonCell implements OnInit {
 
   constructor() {
     super();

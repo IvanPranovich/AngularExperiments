@@ -1,3 +1,15 @@
-<p>
-  my-table-cell works!
-</p>
+<div *ngIf="isEditMode">
+  <div [ngSwitch]="cellType">
+    <div *ngSwitchCase="'checkbox'">
+      <lib-my-checkbox [initialValue]="initialValue" (valueChange)='cellValueChanged($event)'></lib-my-checkbox>
+    </div>
+    <div *ngSwitchCase="'text'">
+      <lib-my-text [initialValue]="initialValue" (valueChange)='cellValueChanged($event)' [isReadOnly]='isReadOnly'></lib-my-text>
+    </div>
+    <div *ngSwitchCase="'dropdown'">
+      <lib-my-dropdown [initialValue]="initialValue" (valueChange)='cellValueChanged($event)' [isReadOnly]='isReadOnly' [dropdownValues]='additionalValues'></lib-my-dropdown>
+    </div>
+    <div *ngSwitchDefault>{{initialValue}}</div>
+  </div>
+</div>
+<div *ngIf="!isEditMode">{{initialValue}}</div>

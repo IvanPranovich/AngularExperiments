@@ -8,21 +8,14 @@
   <tbody>
     <tr *ngFor="let row of rowData; let rowNumber = index">
       <td *ngFor="let column of columns; let colNumber = index">
-        <div *ngIf="isEditMode">
-          <div [ngSwitch]="column.cellType">
-            <div *ngSwitchCase="'checkbox'">
-              <lib-my-checkbox [initialValue]="row[colNumber]" (valueChange)='cellValueChanged(rowNumber, colNumber, $event)' [isReadOnly]='column.isReadOnly'></lib-my-checkbox>
-            </div>
-            <div *ngSwitchCase="'text'">
-              <lib-my-text [initialValue]="row[colNumber]" (valueChange)='cellValueChanged(rowNumber, colNumber, $event)' [isReadOnly]='column.isReadOnly'></lib-my-text>
-            </div>
-            <div *ngSwitchCase="'dropdown'">
-              <lib-my-dropdown [initialValue]="row[colNumber]" (valueChange)='cellValueChanged(rowNumber, colNumber, $event)' [isReadOnly]='column.isReadOnly' [dropdownValues]='column.additionalValues'></lib-my-dropdown>
-            </div>
-            <div *ngSwitchDefault>{{row[colNumber]}}</div>
-          </div>
-        </div>
-        <div *ngIf="!isEditMode">{{row[colNumber]}}</div>
+        <lib-my-table-cell 
+          [cellType]="column.cellType" 
+          [initialValue]="row[colNumber]" 
+          (cellValueChange)='tableValueChanged(rowNumber, colNumber, $event)' 
+          [isReadOnly]='column.isReadOnly' 
+          [additionalValues]='column.additionalValues'
+          [isEditMode]="isEditMode">
+        </lib-my-table-cell>
       </td>
     </tr>
   </tbody>

@@ -1,6 +1,6 @@
 import { Input, Output, EventEmitter, OnInit, OnChanges } from '@angular/core';
 
-export class MyTableCellComponent implements OnChanges {
+export class MyTableCommonCell implements OnChanges {
     set currentValue(newValue: any) {
         this._currentValue = newValue;
         this.valueChanged();
@@ -20,7 +20,7 @@ export class MyTableCellComponent implements OnChanges {
         this._currentValue = this.initialValue;
     }
 
-    valueChanged() {
+    valueChanged(): void {
         this.valueChange.emit(this._currentValue);
     }
 }

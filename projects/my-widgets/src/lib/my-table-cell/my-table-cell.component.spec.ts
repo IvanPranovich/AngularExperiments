@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { MyTableCellComponent } from './my-table-cell.component';
+import { MyTableDataComponent } from './my-table-cell.component';
 
 describe('MyTableCellComponent', () => {
-  let component: MyTableCellComponent;
-  let fixture: ComponentFixture<MyTableCellComponent>;
+  let component: MyTableDataComponent;
+  let fixture: ComponentFixture<MyTableDataComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ MyTableCellComponent ]
+      declarations: [ MyTableDataComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(MyTableCellComponent);
+    fixture = TestBed.createComponent(MyTableDataComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

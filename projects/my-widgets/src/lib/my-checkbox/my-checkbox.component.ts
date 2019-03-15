@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { MyTableCellComponent } from '../common/my-table-cell-component';
+import { MyTableCommonCell } from '../common/my-table-common-cell';
 
 @Component({
   selector: 'lib-my-checkbox',
   templateUrl: './my-checkbox.component.html',
   styleUrls: ['./my-checkbox.component.css']
 })
-export class MyCheckboxComponent extends MyTableCellComponent implements OnInit {
+export class MyCheckboxComponent extends MyTableCommonCell implements OnInit {
   constructor() {
     super();
   }
