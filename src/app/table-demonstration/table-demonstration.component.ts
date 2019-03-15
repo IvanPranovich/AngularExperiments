@@ -55,14 +55,13 @@ export class TableDemonstrationComponent implements OnInit {
     return this._isEditMode;
   }
 
-  set isEditMode(newState: boolean)
-  {
+  set isEditMode(newState: boolean) {
     this._isEditMode = newState;
     if (this.isEditMode)
     {
-      this.tableMode = 'Edit Mode';
+      this.tableMode = 'Switch to View Mode';
     } else {
-      this.tableMode = 'View Mode';
+      this.tableMode = 'Switch to Edit Mode';
     }
   }
 }
