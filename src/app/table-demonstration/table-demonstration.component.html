@@ -1,3 +1,6 @@
-<button (click)="toggleEditMode()">{{ tableMode }}</button>
+
+<p>1. Click header to sort</p>
+<p>2. Double header to filter column. Filters support regular expressions</p>
+<p>3. Click <button (click)="toggleEditMode()">{{ tableMode }}</button> to switch modes </p>
 <lib-my-table [columns]="columns" [dataSource]="aircraftSchedules" [isEditMode]="isEditMode"></lib-my-table> 
 
