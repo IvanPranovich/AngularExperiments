@@ -2,7 +2,6 @@ import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/cor
 import { MyTableColumn } from './my-table-column';
 import { Observable, Subject, of } from 'rxjs';
 import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
-import { MySearchboxComponent } from '../my-searchbox/my-searchbox.component';
 
 @Component({
   selector: 'lib-my-table',
@@ -18,6 +17,8 @@ export class MyTableComponent implements OnInit, OnChanges {
   displayRowData$: Observable<any[]>;
   isSearchCaption: boolean[];
   currentSearchTerms: { [id: number]: string; } = {};
+  isSortAscending = false;
+  sortingColumn: 0;
   private searchTerms = new Subject<any>();
 
   search(term: string, colNumber: number): void {
@@ -95,6 +96,19 @@ export class MyTableComponent implements OnInit, OnChanges {
       return 'View Mode';
     }
   }
+
+  isSorting(colNumber: number) {
+    return this.sortingColumn !== colNumber;
+  }
+
+  isSortAsc(colNumber: number) {
+    return this.sortingColumn === colNumber && this.isSortAscending;
+  }
+
+  isSortDesc(colNumber: number) {
+    return this.sortingColumn === colNumber && !this.isSortAscending;
+  };
+
 
   tableValueChanged(rowNumber: number, colNumber: number, $event: any): void {
       console.log('TODO: Changed value' + rowNumber + colNumber + $event);
