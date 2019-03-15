@@ -27,7 +27,6 @@ export class MyTableComponent implements OnInit, OnChanges {
   constructor() { }
 
   filterRowData(row: any): boolean {
-// tslint:disable-next-line: forin
     for (const colNumber in this.currentSearchTerms) {
       if (this.currentSearchTerms.hasOwnProperty(colNumber)) {
         const colSearchTerm = this.currentSearchTerms[colNumber];
