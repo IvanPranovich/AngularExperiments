@@ -19,9 +19,11 @@ export class TableDemonstrationComponent implements OnInit {
     new MyTableColumn('Hull War', 'checkbox', (data: AircraftScheduleProxy) => data.hullCoverage.hullCoverageEnabled),
     new MyTableColumn('TLO', 'checkbox', (data: AircraftScheduleProxy) => data.hullCoverage.tloCoverageEnabled),
     new MyTableColumn('Hull War', 'checkbox', (data: AircraftScheduleProxy) => data.hullCoverage.hullWarCoverageEnabled),
-    new MyTableColumn('Hull Ccy', 'dropdown', (data: AircraftScheduleProxy) => data.hullCoverage.currency.name, false, ['USD', 'EUR', 'BYN']),
-    new MyTableColumn('Hull Value', 'text', (data: AircraftScheduleProxy) => data.hullCoverage.hullValue, true),
-    new MyTableColumn('TLO Value', 'text', (data: AircraftScheduleProxy) => data.hullCoverage.tloLimit, true),
+    new MyTableColumn('Hull Ccy', 'dropdown', (data: AircraftScheduleProxy) => {
+      return data.hullCoverage.currency.name;
+    }, false, ['USD', 'EUR', 'BYN']),
+    new MyTableColumn('Hull Value', 'text', (data: AircraftScheduleProxy) => data.hullCoverage.hullValue, true, undefined, true),
+    new MyTableColumn('TLO Value', 'text', (data: AircraftScheduleProxy) => data.hullCoverage.tloLimit, true, undefined, true),
     new MyTableColumn('Hull Deduct', 'text', (data: AircraftScheduleProxy) => data.hullCoverage.hullDeductibleMonetaryAmount),
     new MyTableColumn('Hull War Deduct', 'text', (data: AircraftScheduleProxy) => data.hullCoverage.hullDeductiblePercentage),
     new MyTableColumn('Liab Ccy', 'text', (data: AircraftScheduleProxy) => data.liabilityCoverage.currency.name),

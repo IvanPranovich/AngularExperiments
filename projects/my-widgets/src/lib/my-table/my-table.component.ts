@@ -2,6 +2,7 @@ import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/cor
 import { MyTableColumn } from './my-table-column';
 import { Observable, Subject, of } from 'rxjs';
 import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
+import { Compiler_compileModuleSync__POST_R3__ } from '@angular/core/src/linker/compiler';
 
 @Component({
   selector: 'lib-my-table',
@@ -13,12 +14,12 @@ export class MyTableComponent implements OnInit, OnChanges {
   @Input() dataSource: any[];
   @Input() isEditMode: boolean;
 
-  rowData: any[];
   displayRowData$: Observable<any[]>;
   isSearchCaption: boolean[];
-  currentSearchTerms: { [id: number]: string; } = {};
-  isSortAscending = false;
-  sortingColumn: 0;
+  private rowData: any[];
+  private currentSearchTerms: { [id: number]: string; } = {};
+  private isSortAscending = false;
+  private sortingColumn = 0;
   private searchTerms = new Subject<any>();
 
   search(term: string, colNumber: number): void {
@@ -48,8 +49,21 @@ export class MyTableComponent implements OnInit, OnChanges {
   }
 
   tableDataService(term: any): Observable<any[]> {
-    this.currentSearchTerms[term.colNumber] = term.term;
-    const data = this.rowData.filter(row => this.filterRowData(row));
+    const sortFunction = function(colNumber: number, isSortAscending: boolean, isNumeric: boolean) {
+      const getSortingValue = function(item) {
+        return isNumeric ? parseFloat(item) : String(item).toUpperCase();
+      };
+      return function (a: any[], b: any[]) {
+        const value1 = getSortingValue(a[colNumber]);
+        const value2 = getSortingValue(b[colNumber]);
+        return ((value1 < value2) ? -1 : ((value1 > value2) ? 1 : 0) * (isSortAscending ? -1 : 1));
+      };
+    };
+    if (term) {
+      this.currentSearchTerms[term.colNumber] = term.term;
+    }
+    const data = this.rowData.filter(row => this.filterRowData(row))
+      .sort(sortFunction(this.sortingColumn, this.isSortAscending, this.columns[this.sortingColumn].isNumeric));
     return of(data);
   }
 
@@ -107,8 +121,20 @@ export class MyTableComponent implements OnInit, OnChanges {
 
   isSortDesc(colNumber: number) {
     return this.sortingColumn === colNumber && !this.isSortAscending;
-  };
+  }
 
+  sortClick(colNumber: number) {
+    if (!colNumber || colNumber < 0 || colNumber >= this.columns.length) {
+      return;
+    }
+    if (this.sortingColumn === colNumber) {
+      this.isSortAscending = !this.isSortAscending;
+    } else {
+      this.sortingColumn = colNumber;
+      this.isSortAscending = true;
+    }
+    this.searchTerms.next({undefined, colNumber});
+  }
 
   tableValueChanged(rowNumber: number, colNumber: number, $event: any): void {
       console.log('TODO: Changed value' + rowNumber + colNumber + $event);

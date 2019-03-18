@@ -3,7 +3,7 @@
   <thead>
     <tr>
       <th *ngFor="let column of columns; let colNumber = index" [ngClass] = "{ 'sorting': isSorting(colNumber), 'sorting_asc': isSortAsc(colNumber), 'sorting_desc': isSortDesc(colNumber) }" >
-        <div (dblclick)="toggleSearchBox(colNumber)"><span>{{ column.caption }}</span></div>
+        <div (dblclick)="toggleSearchBox(colNumber)" (click)="sortClick(colNumber)"><span>{{ column.caption }}</span></div>
         <div *ngIf="isSearchCaption[colNumber]"><p><input #searchBox (input)="search(searchBox.value, colNumber)"/></p></div>
       </th>
     </tr>
