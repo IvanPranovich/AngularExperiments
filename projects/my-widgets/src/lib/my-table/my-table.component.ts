@@ -102,8 +102,10 @@ export class MyTableComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     this.rowData = this.getRowData();
-    this.search('', 0);
-    this.isSearchCaption = new Array<boolean>(this.rowData.length);
+    this.searchTerms.next();
+    if (!this.isSearchCaption) {
+      this.isSearchCaption = new Array<boolean>(this.rowData.length);
+    }
     if (changes.rowsPerPage) {
       this.rowsPerPage = changes.rowsPerPage.currentValue;
     }
