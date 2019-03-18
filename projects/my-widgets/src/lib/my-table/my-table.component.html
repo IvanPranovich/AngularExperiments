@@ -1,15 +1,15 @@
-<table class="table table-striped">
+<table class="table table-striped table-bordered table-hover">
   <caption><h1>My Super Table in {{ getMode() }}</h1></caption>
   <thead>
     <tr>
-      <th *ngFor="let column of columns; let colNumber = index" [ngClass] = "{ 'sorting': isSorting(colNumber), 'sorting_asc': isSortAsc(colNumber), 'sorting_desc': isSortDesc(colNumber) }" >
+      <th scope="col" *ngFor="let column of columns; let colNumber = index" [ngClass] = "{ 'sorting': isSorting(colNumber), 'sorting_asc': isSortAsc(colNumber), 'sorting_desc': isSortDesc(colNumber) }" >
         <div (dblclick)="toggleSearchBox(colNumber)" (click)="sortClick(colNumber)"><span>{{ column.caption }}</span></div>
         <div *ngIf="isSearchCaption[colNumber]"><p><input #searchBox (input)="search(searchBox.value, colNumber)"/></p></div>
       </th>
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let row of pagedItems; let rowNumber = index">
+    <tr scope="row" *ngFor="let row of pagedItems; let rowNumber = index">
       <td *ngFor="let column of columns; let colNumber = index">
         <lib-my-table-cell 
           [cellType]="column.cellType" 
@@ -24,20 +24,20 @@
   </tbody>
   <div>
       <ul *ngIf="pager.pages && pager.pages.length" class="pagination">
-        <li [ngClass]="{disabled:pager.currentPage === 1}">
-            <a (click)="setPage(1)">First</a>
+        <li [ngClass]="{'disabled': pager.currentPage === 1, 'page-item': true }">
+            <a (click)="setPage(1)" class="page-link" >First</a>
         </li>
-        <li [ngClass]="{disabled:pager.currentPage === 1}">
-            <a (click)="setPage(pager.currentPage - 1)">Previous</a>
+        <li [ngClass]="{'disabled':pager.currentPage === 1, 'page-item': true }" class="previous">
+            <a (click)="setPage(pager.currentPage - 1)" class="page-link" >Previous</a>
         </li>
-        <li *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage === page}">
-            <a (click)="setPage(page)">{{page}}</a>
+        <li *ngFor="let page of pager.pages" [ngClass]="{'active':pager.currentPage === page, 'page-item': true }">
+            <a (click)="setPage(page)" class="page-link" >{{page}}</a>
         </li>
-        <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
-            <a (click)="setPage(pager.currentPage + 1)">Next</a>
+        <li [ngClass]="{'disabled':pager.currentPage === pager.totalPages, 'page-item': true}" class="next">
+            <a (click)="setPage(pager.currentPage + 1)" class="page-link" >Next</a>
         </li>
-        <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
-            <a (click)="setPage(pager.totalPages)">Last</a>
+        <li [ngClass]="{'disabled':pager.currentPage === pager.totalPages, 'page-item':true }">
+            <a (click)="setPage(pager.totalPages)" class="page-link" >Last</a>
         </li>
       </ul>
   </div>

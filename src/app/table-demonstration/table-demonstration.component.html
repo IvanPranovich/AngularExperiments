@@ -1,7 +1,7 @@
 
 <p>1. Click header to sort</p>
-<p>2. Double header to filter column. Filters support regular expressions</p>
-<p>3. Click <button (click)="toggleEditMode()">{{ tableMode }}</button> to switch modes </p>
+<p>2. Double header to filter column. Filters support <span>regular expressions</span></p>
+<p>3. Click <button class="btn btn-warning" (click)="toggleEditMode()">{{ tableMode }}</button> to switch modes </p>
 <p>4. Set <input #rowsPerPageInput (input)="setRowsPerPage(rowsPerPageInput.value)" [value]="rowsPerPage"/> rows per page</p>
 <lib-my-table [columns]="columns" [dataSource]="aircraftSchedules" [isEditMode]="isEditMode" [rowsPerPage]="rowsPerPage"></lib-my-table> 
 

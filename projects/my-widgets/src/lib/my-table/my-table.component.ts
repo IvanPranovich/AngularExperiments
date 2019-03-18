@@ -37,16 +37,20 @@ export class MyTableComponent implements OnInit, OnChanges {
     for (const colNumber in this.currentSearchTerms) {
       if (this.currentSearchTerms.hasOwnProperty(colNumber)) {
         const colSearchTerm = this.currentSearchTerms[colNumber];
-        const cellData = row[colNumber].toString();
-        try {
-          const regExp = new RegExp(colSearchTerm);
-          if (!regExp.test(cellData)) {
-            return false;
+        if (row[colNumber]) {
+          const cellData = row[colNumber].toString();
+          try {
+            const regExp = new RegExp(colSearchTerm);
+            if (!regExp.test(cellData)) {
+              return false;
+            }
+          } catch (e) { // It's not valid regular expression
+            if (!cellData.includes(colSearchTerm)) {
+              return false;
+            }
           }
-        } catch (e) { // It's not valid regular expression
-          if (!cellData.includes(colSearchTerm)) {
-            return false;
-          }
+        } else {
+          return false;
         }
       }
     }
