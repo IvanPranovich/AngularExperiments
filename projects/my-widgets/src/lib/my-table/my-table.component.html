@@ -1,4 +1,4 @@
-<table>
+<table class="table table-striped">
   <caption><h1>My Super Table in {{ getMode() }}</h1></caption>
   <thead>
     <tr>
@@ -7,14 +7,9 @@
         <div *ngIf="isSearchCaption[colNumber]"><p><input #searchBox (input)="search(searchBox.value, colNumber)"/></p></div>
       </th>
     </tr>
-    <!-- <tr>
-      <th *ngFor="let column of columns; let colNumber = index">
-        <input type="checkbox" checked/>
-      </th>
-    </tr> -->
   </thead>
   <tbody>
-    <tr *ngFor="let row of displayRowData$ | async; let rowNumber = index">
+    <tr *ngFor="let row of pagedItems; let rowNumber = index">
       <td *ngFor="let column of columns; let colNumber = index">
         <lib-my-table-cell 
           [cellType]="column.cellType" 
@@ -27,4 +22,23 @@
       </td>
     </tr>
   </tbody>
+  <div>
+      <ul *ngIf="pager.pages && pager.pages.length" class="pagination">
+        <li [ngClass]="{disabled:pager.currentPage === 1}">
+            <a (click)="setPage(1)">First</a>
+        </li>
+        <li [ngClass]="{disabled:pager.currentPage === 1}">
+            <a (click)="setPage(pager.currentPage - 1)">Previous</a>
+        </li>
+        <li *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage === page}">
+            <a (click)="setPage(page)">{{page}}</a>
+        </li>
+        <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+            <a (click)="setPage(pager.currentPage + 1)">Next</a>
+        </li>
+        <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+            <a (click)="setPage(pager.totalPages)">Last</a>
+        </li>
+      </ul>
+  </div>
 </table>

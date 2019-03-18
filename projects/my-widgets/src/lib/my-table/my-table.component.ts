@@ -1,8 +1,8 @@
 import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { MyTableColumn } from './my-table-column';
 import { Observable, Subject, of } from 'rxjs';
-import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
-import { Compiler_compileModuleSync__POST_R3__ } from '@angular/core/src/linker/compiler';
+import { debounceTime, distinctUntilChanged, switchMap, filter } from 'rxjs/operators';
+import { PagerService } from '../pager.service';
 
 @Component({
   selector: 'lib-my-table',
@@ -13,20 +13,24 @@ export class MyTableComponent implements OnInit, OnChanges {
   @Input() columns: MyTableColumn[];
   @Input() dataSource: any[];
   @Input() isEditMode: boolean;
+  @Input() rowsPerPage: number;
 
-  displayRowData$: Observable<any[]>;
+  displayedRowData$: Observable<any[]>;
+  pagedItems: any[];
+  pager: any = {};
   isSearchCaption: boolean[];
+  private allPagedItems: any[];
   private rowData: any[];
   private currentSearchTerms: { [id: number]: string; } = {};
   private isSortAscending = false;
   private sortingColumn = 0;
   private searchTerms = new Subject<any>();
 
+  constructor(private pagerService: PagerService) { }
+
   search(term: string, colNumber: number): void {
     this.searchTerms.next({term, colNumber});
   }
-
-  constructor() { }
 
   filterRowData(row: any): boolean {
     for (const colNumber in this.currentSearchTerms) {
@@ -51,7 +55,7 @@ export class MyTableComponent implements OnInit, OnChanges {
   tableDataService(term: any): Observable<any[]> {
     const sortFunction = function(colNumber: number, isSortAscending: boolean, isNumeric: boolean) {
       const getSortingValue = function(item) {
-        return isNumeric ? parseFloat(item) : String(item).toUpperCase();
+        return isNumeric ? parseFloat(String(item)) : String(item).toUpperCase();
       };
       return function (a: any[], b: any[]) {
         const value1 = getSortingValue(a[colNumber]);
@@ -63,17 +67,21 @@ export class MyTableComponent implements OnInit, OnChanges {
       this.currentSearchTerms[term.colNumber] = term.term;
     }
     const data = this.rowData.filter(row => this.filterRowData(row))
-      .sort(sortFunction(this.sortingColumn, this.isSortAscending, this.columns[this.sortingColumn].isNumeric));
+      .sort(sortFunction(this.sortingColumn, this.isSortAscending, this.columns[this.sortingColumn].isNumeric))
     return of(data);
   }
 
 
   ngOnInit() {
-    this.displayRowData$ = this.searchTerms.pipe(
+    this.displayedRowData$ = this.searchTerms.pipe(
       debounceTime(300),
       distinctUntilChanged(),
       switchMap((term: any) => this.tableDataService(term)),
     );
+    this.displayedRowData$.subscribe(data => {
+      this.allPagedItems = data;
+      this.setPage(1);
+    });
   }
 
   toggleSearchBox(column: number) {
@@ -87,6 +95,7 @@ export class MyTableComponent implements OnInit, OnChanges {
     this.rowData = this.getRowData();
     this.search('', 0);
     this.isSearchCaption = new Array<boolean>(this.rowData.length);
+    this.rowsPerPage = changes.rowsPerPage.currentValue;
   }
 
   getRowData(): any[] {
@@ -124,7 +133,7 @@ export class MyTableComponent implements OnInit, OnChanges {
   }
 
   sortClick(colNumber: number) {
-    if (!colNumber || colNumber < 0 || colNumber >= this.columns.length) {
+    if (colNumber < 0 || colNumber >= this.columns.length) {
       return;
     }
     if (this.sortingColumn === colNumber) {
@@ -134,6 +143,15 @@ export class MyTableComponent implements OnInit, OnChanges {
       this.isSortAscending = true;
     }
     this.searchTerms.next({undefined, colNumber});
+  }
+
+  setPage(page: number) {
+    if (page < 1 || page >= this.pager.totalPages){
+      return;
+    }
+
+    this.pager = this.pagerService.getPager(this.rowData.length, page, this.rowsPerPage);
+    this.pagedItems = this.allPagedItems.slice(this.pager.startIndex, this.pager.endIndex + 1);
   }
 
   tableValueChanged(rowNumber: number, colNumber: number, $event: any): void {
