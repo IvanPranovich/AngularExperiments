@@ -54,7 +54,7 @@ export class MyTableComponent implements OnInit, OnChanges {
   }
 
   tableDataService(term: any): Observable<any[]> {
-    if (term) {
+    if (term && term.term) {
       this.currentSearchTerms[term.colNumber] = term.term;
     }
     const data = this.rowData.filter(row => this.filterRowData(row));
@@ -104,7 +104,9 @@ export class MyTableComponent implements OnInit, OnChanges {
     this.rowData = this.getRowData();
     this.search('', 0);
     this.isSearchCaption = new Array<boolean>(this.rowData.length);
-    this.rowsPerPage = changes.rowsPerPage.currentValue;
+    if (changes.rowsPerPage) {
+      this.rowsPerPage = changes.rowsPerPage.currentValue;
+    }
   }
 
   getRowData(): any[] {
