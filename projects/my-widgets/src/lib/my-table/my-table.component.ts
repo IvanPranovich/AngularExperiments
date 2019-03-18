@@ -15,7 +15,6 @@ export class MyTableComponent implements OnInit, OnChanges {
   @Input() isEditMode: boolean;
   @Input() rowsPerPage: number;
 
-  displayedRowData$: Observable<any[]>;
   pagedItems: any[];
   pager: any = {};
   isSearchCaption: boolean[];
@@ -25,6 +24,8 @@ export class MyTableComponent implements OnInit, OnChanges {
   private isSortAscending = false;
   private sortingColumn = 0;
   private searchTerms = new Subject<any>();
+  private displayedRowData$: Observable<any[]>;
+  private sortedRowData$: Observable<any[]>;
 
   constructor(private pagerService: PagerService) { }
 
@@ -53,6 +54,14 @@ export class MyTableComponent implements OnInit, OnChanges {
   }
 
   tableDataService(term: any): Observable<any[]> {
+    if (term) {
+      this.currentSearchTerms[term.colNumber] = term.term;
+    }
+    const data = this.rowData.filter(row => this.filterRowData(row));
+    return of(data);
+  }
+
+  sortDataService(data: any[]): Observable<any[]> {
     const sortFunction = function(colNumber: number, isSortAscending: boolean, isNumeric: boolean) {
       const getSortingValue = function(item) {
         return isNumeric ? parseFloat(String(item)) : String(item).toUpperCase();
@@ -63,12 +72,8 @@ export class MyTableComponent implements OnInit, OnChanges {
         return ((value1 < value2) ? -1 : ((value1 > value2) ? 1 : 0) * (isSortAscending ? -1 : 1));
       };
     };
-    if (term) {
-      this.currentSearchTerms[term.colNumber] = term.term;
-    }
-    const data = this.rowData.filter(row => this.filterRowData(row))
-      .sort(sortFunction(this.sortingColumn, this.isSortAscending, this.columns[this.sortingColumn].isNumeric))
-    return of(data);
+    const result = data.sort(sortFunction(this.sortingColumn, this.isSortAscending, this.columns[this.sortingColumn].isNumeric));
+    return of(result);
   }
 
 
@@ -78,7 +83,11 @@ export class MyTableComponent implements OnInit, OnChanges {
       distinctUntilChanged(),
       switchMap((term: any) => this.tableDataService(term)),
     );
-    this.displayedRowData$.subscribe(data => {
+    this.sortedRowData$ = this.displayedRowData$.pipe(
+      debounceTime(300),
+      switchMap((data: any) => this.sortDataService(data)),
+    );
+    this.sortedRowData$.subscribe(data => {
       this.allPagedItems = data;
       this.setPage(1);
     });
