@@ -3,23 +3,35 @@
   <thead>
     <tr>
       <th scope="col" *ngFor="let column of columns; let colNumber = index" [ngClass] = "{ 'sorting': isSorting(colNumber), 'sorting_asc': isSortAsc(colNumber), 'sorting_desc': isSortDesc(colNumber) }" >
-        <div (dblclick)="toggleSearchBox(colNumber)" (click)="sortClick(colNumber)"><span>{{ column.caption }}</span></div>
+        <div (dblclick)="toggleSearchBox(colNumber)" (click)="sortClick(colNumber)">{{ column.caption }}</div>
         <div *ngIf="isSearchCaption[colNumber]"><p><input #searchBox (input)="search(searchBox.value, colNumber)"/></p></div>
       </th>
     </tr>
   </thead>
   <tbody>
     <tr scope="row" *ngFor="let row of pagedItems; let rowNumber = index">
-      <td *ngFor="let column of columns; let colNumber = index">
-        <lib-my-table-cell 
-          [cellType]="column.cellType" 
-          [initialValue]="row[colNumber]" 
-          (cellValueChange)='tableValueChanged(rowNumber, colNumber, $event)' 
-          [isReadOnly]='column.isReadOnly' 
-          [additionalValues]='column.additionalValues'
-          [isEditMode]="isEditMode">
-        </lib-my-table-cell>
-      </td>
+      <ng-container *ngFor="let column of columns; let colNumber = index">
+        <th *ngIf="colNumber === 0">
+          <lib-my-table-cell 
+            [cellType]="column.cellType" 
+            [initialValue]="row[colNumber]" 
+            (cellValueChange)='tableValueChanged(rowNumber, colNumber, $event)' 
+            [isReadOnly]='column.isReadOnly' 
+            [additionalValues]='column.additionalValues'
+            [isEditMode]="isEditMode">
+          </lib-my-table-cell>
+        </th>
+        <td *ngIf="colNumber !== 0" >
+          <lib-my-table-cell 
+            [cellType]="column.cellType" 
+            [initialValue]="row[colNumber]" 
+            (cellValueChange)='tableValueChanged(rowNumber, colNumber, $event)' 
+            [isReadOnly]='column.isReadOnly' 
+            [additionalValues]='column.additionalValues'
+            [isEditMode]="isEditMode">
+          </lib-my-table-cell>
+        </td>
+      </ng-container>
     </tr>
   </tbody>
   <div>
