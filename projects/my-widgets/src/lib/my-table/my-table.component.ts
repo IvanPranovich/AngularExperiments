@@ -84,11 +84,15 @@ export class MyTableComponent implements OnInit, OnChanges {
 
 
   ngOnInit() {
-    // TODO: errors
     this.displayedRowData$ = this.searchTerms.pipe(
       debounceTime(300),
       distinctUntilChanged(),
       switchMap((term: any) => this.tableDataService(term)),
+      catchError(err => {
+        // TODO: inject logger and send message to it.
+        console.log(err);
+        return of([]);
+      })
     );
     this.sortedRowData$ = this.displayedRowData$.pipe(
       switchMap((data: any) => this.sortDataService(data)),
@@ -146,8 +150,7 @@ export class MyTableComponent implements OnInit, OnChanges {
   }
 
   getMode(): string {
-    if (this.isEditMode)
-    {
+    if (this.isEditMode) {
       return 'Edit Mode';
     } else {
       return 'View Mode';
@@ -194,5 +197,6 @@ export class MyTableComponent implements OnInit, OnChanges {
 
   tableValueChanged(rowNumber: number, colNumber: number, $event: any): void {
       console.log('TODO: Changed value' + rowNumber + colNumber + $event);
+      this.rowChanges[rowNumber] = true;
   }
 }
