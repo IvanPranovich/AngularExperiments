@@ -11,27 +11,44 @@ import { MyTableColumn } from 'projects/my-widgets/src/lib/my-table/my-table-col
 export class TableDemonstrationComponent implements OnInit {
   aircraftSchedules: AircraftScheduleProxy[] = [];
   columns: MyTableColumn[] = [
-    new MyTableColumn('Reg No', 'text', (data: AircraftScheduleProxy) => data.registrationNumber),
-    new MyTableColumn('Make/Model', 'text', (data: AircraftScheduleProxy) => data.aircraftModel.aircraftMake.name),
-    new MyTableColumn('Use', 'text', (data: AircraftScheduleProxy) => data.purposeOfUse.name),
-    new MyTableColumn('Seats c/p', 'text', (data: AircraftScheduleProxy) => data.crewSeats + '/' + data.passengerSeats),
-    new MyTableColumn('Hull War', 'checkbox', (data: AircraftScheduleProxy) => data.hullCoverage.hullCoverageEnabled),
-    new MyTableColumn('TLO', 'checkbox', (data: AircraftScheduleProxy) => data.hullCoverage.tloCoverageEnabled),
-    new MyTableColumn('Hull War', 'checkbox', (data: AircraftScheduleProxy) => data.hullCoverage.hullWarCoverageEnabled),
-    new MyTableColumn('Hull Ccy', 'dropdown', (data: AircraftScheduleProxy) => {
-      return data.hullCoverage.currency.name;
-    }, false, ['USD', 'EUR', 'BYN']),
-    new MyTableColumn('Hull Value', 'text', (data: AircraftScheduleProxy) => data.hullCoverage.hullValue, true, undefined, true),
-    new MyTableColumn('TLO Value', 'text', (data: AircraftScheduleProxy) => data.hullCoverage.tloLimit, true, undefined, true),
-    new MyTableColumn('Hull Deduct', 'text', (data: AircraftScheduleProxy) => data.hullCoverage.hullDeductibleMonetaryAmount),
-    new MyTableColumn('Hull War Deduct', 'text', (data: AircraftScheduleProxy) => data.hullCoverage.hullDeductiblePercentage),
-    new MyTableColumn('Liab Ccy', 'text', (data: AircraftScheduleProxy) => data.liabilityCoverage.currency.name),
+    new MyTableColumn('Reg No', 'text', (data: AircraftScheduleProxy) => data.registrationNumber,
+      (value, data, index) => data.registrationNumber = value),
+    new MyTableColumn('Make/Model', 'text', (data: AircraftScheduleProxy) => data.aircraftModel.aircraftMake.name,
+      (value, data, index) => data.aircraftModel.aircraftMake.name = value),
+    new MyTableColumn('Use', 'text', (data: AircraftScheduleProxy) => data.purposeOfUse.name,
+      (value, data, index) => data.purposeOfUse.name = value),
+    new MyTableColumn('Seats c/p', 'text', (data: AircraftScheduleProxy) => data.crewSeats + '/' + data.passengerSeats,
+      (value, data, index) => data.crewSeats = value), // TODO: setter
+    new MyTableColumn('Hull War', 'checkbox', (data: AircraftScheduleProxy) => data.hullCoverage.hullCoverageEnabled,
+      (value, data, index) => data.hullCoverage.hullCoverageEnabled = value),
+    new MyTableColumn('TLO', 'checkbox', (data: AircraftScheduleProxy) => data.hullCoverage.tloCoverageEnabled,
+      (value, data, index) => data.hullCoverage.tloCoverageEnabled = value),
+    new MyTableColumn('Hull War', 'checkbox', (data: AircraftScheduleProxy) => data.hullCoverage.tloCoverageEnabled,
+      (value, data, index) => data.hullCoverage.tloCoverageEnabled = value),
+    new MyTableColumn('Hull Ccy', 'dropdown', (data: AircraftScheduleProxy) =>  data.hullCoverage.currency.name,
+      (value, data, index) => data.hullCoverage.currency.name = value, false, false, ['USD', 'EUR', 'BYN']),
+    new MyTableColumn('Hull Value', 'text', (data: AircraftScheduleProxy) => data.hullCoverage.hullValue,
+      (value, data, index) => data.purposeOfUse.name = value, true, true),
+    new MyTableColumn('TLO Value', 'text', (data: AircraftScheduleProxy) => data.hullCoverage.tloLimit,
+      (value, data, index) => data.hullCoverage.tloLimit = value, true, true),
+    new MyTableColumn('Hull Deduct', 'text', (data: AircraftScheduleProxy) => data.hullCoverage.hullDeductibleMonetaryAmount,
+      (value, data, index) => data.hullCoverage.hullDeductibleMonetaryAmount = value),
+    new MyTableColumn('Hull War Deduct', 'text', (data: AircraftScheduleProxy) => data.hullCoverage.hullDeductiblePercentage,
+      (value, data, index) => data.hullCoverage.hullDeductiblePercentage = value),
+    new MyTableColumn('Liab Ccy', 'text', (data: AircraftScheduleProxy) => data.liabilityCoverage.currency.name,
+      (value, data, index) => data.liabilityCoverage.currency.name = value),
     new MyTableColumn('Liab Limit (CSL/TP/Pax)', 'text', (data: AircraftScheduleProxy) =>
-      { data.liabilityCoverage.cslLimit, data.liabilityCoverage.thirdPartyLimit, data.liabilityCoverage.passengersLimit }),
-    new MyTableColumn('PA Ccy', 'dropdown', (data: AircraftScheduleProxy) => data.personalAccidentCoverage.currency.name, false, ['USD', 'EUR', 'BYN']),
-    new MyTableColumn('PA Limit (C/Pax)', 'PA Limit (C/Pax)', (data: AircraftScheduleProxy) => data.personalAccidentCoverage.crewLimit + '/' + data.personalAccidentCoverage.passengersLimit),
-    new MyTableColumn('AVN 52E Limit', 'PA Limit (C/Pax)', (data: AircraftScheduleProxy) => data.aircraftModel.deductibleType),
-    new MyTableColumn('LiabilityDeduct', 'PA Limit (C/Pax)', (data: AircraftScheduleProxy) => data.aircraftId),
+      { data.liabilityCoverage.cslLimit, data.liabilityCoverage.thirdPartyLimit, data.liabilityCoverage.passengersLimit },
+      (value, data, index) => data.liabilityCoverage.cslLimit = value), // TODO: setter
+    new MyTableColumn('PA Ccy', 'dropdown', (data: AircraftScheduleProxy) => data.personalAccidentCoverage.currency.name,
+      (value, data, index) => data.personalAccidentCoverage.currency.name, false, false, ['USD', 'EUR', 'BYN']),
+    new MyTableColumn('PA Limit (C/Pax)', 'PA Limit (C/Pax)', (data: AircraftScheduleProxy) => 
+      data.personalAccidentCoverage.crewLimit + '/' + data.personalAccidentCoverage.passengersLimit,
+      (value, data, index) => data.personalAccidentCoverage.crewLimit = value), // TODO: setter
+    new MyTableColumn('AVN 52E Limit', 'PA Limit (C/Pax)', (data: AircraftScheduleProxy) => data.aircraftModel.deductibleType,
+      (value, data, index) => data.aircraftModel.deductibleType = value),
+    new MyTableColumn('LiabilityDeduct', 'PA Limit (C/Pax)', (data: AircraftScheduleProxy) => data.aircraftId,
+      (value, data, index) => data.aircraftId = value),
   ];
   tableMode: string;
   rowsPerPage = 5;

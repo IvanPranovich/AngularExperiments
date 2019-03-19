@@ -115,7 +115,7 @@ export class MyTableComponent implements OnInit, OnChanges {
     }
     if (changes.columns) {
       this.columns = changes.columns.currentValue;
-      this.columns.unshift(new MyTableColumn('#', 'rowNumber', (data, index) => index + 1, true, undefined, true));
+      this.columns.unshift(new MyTableColumn('#', 'rowNumber', (data, index) => index + 1, null, true, true));
     }
   }
 
