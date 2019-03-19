@@ -113,6 +113,10 @@ export class MyTableComponent implements OnInit, OnChanges {
     if (changes.rowsPerPage) {
       this.rowsPerPage = changes.rowsPerPage.currentValue;
     }
+    if (changes.columns) {
+      this.columns = changes.columns.currentValue;
+      this.columns.unshift(new MyTableColumn('#', 'rowNumber', (data, index) => index + 1, false, undefined, true));
+    }
   }
 
   getRowData(): any[] {

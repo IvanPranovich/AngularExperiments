@@ -11,7 +11,6 @@ import { MyTableColumn } from 'projects/my-widgets/src/lib/my-table/my-table-col
 export class TableDemonstrationComponent implements OnInit {
   aircraftSchedules: AircraftScheduleProxy[] = [];
   columns: MyTableColumn[] = [
-    new MyTableColumn('#', 'rowNumber', (data, index) => index + 1, false, undefined, true),
     new MyTableColumn('Reg No', 'text', (data: AircraftScheduleProxy) => data.registrationNumber),
     new MyTableColumn('Make/Model', 'text', (data: AircraftScheduleProxy) => data.aircraftModel.aircraftMake.name),
     new MyTableColumn('Use', 'text', (data: AircraftScheduleProxy) => data.purposeOfUse.name),
