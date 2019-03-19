@@ -20,6 +20,7 @@
             [additionalValues]='column.additionalValues'
             [isEditMode]="isEditMode">
           </lib-my-table-cell>
+          <button *ngIf="rowChanges[row[0]]" class="btn btn-danger" (click)="discardChanges(row[0])">Discard changes</button>
         </th>
         <td *ngIf="colNumber !== 0" >
           <lib-my-table-cell 

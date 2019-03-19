@@ -18,6 +18,8 @@ export class MyTableComponent implements OnInit, OnChanges {
   pagedItems: any[];
   pager: any = {};
   isSearchCaption: boolean[];
+  rowChanges: boolean[];
+  cellChanges: [boolean[]];
   private allPagedItems: any[];
   private rowData: any[];
   private currentSearchTerms: { [id: number]: string; } = {};
@@ -106,9 +108,19 @@ export class MyTableComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     this.rowData = this.getRowData();
-    this.searchTerms.next();
     if (!this.isSearchCaption) {
       this.isSearchCaption = new Array<boolean>(this.rowData.length);
+    } else {
+      if (this.rowData && this.rowData.length !== this.isSearchCaption.length) {
+        this.isSearchCaption = new Array<boolean>(this.rowData.length);
+      }
+    }
+    if (!this.rowChanges) {
+      this.rowChanges = new Array<boolean>(this.rowData.length);
+    } else {
+      if (this.rowData && this.rowData.length !== this.rowChanges.length) {
+        this.rowChanges = new Array<boolean>(this.rowData.length);
+      }
     }
     if (changes.rowsPerPage) {
       this.rowsPerPage = changes.rowsPerPage.currentValue;
@@ -117,6 +129,7 @@ export class MyTableComponent implements OnInit, OnChanges {
       this.columns = changes.columns.currentValue;
       this.columns.unshift(new MyTableColumn('#', 'rowNumber', (data, index) => index + 1, null, true, true));
     }
+    this.searchTerms.next();
   }
 
   getRowData(): any[] {
@@ -173,6 +186,10 @@ export class MyTableComponent implements OnInit, OnChanges {
 
     this.pager = this.pagerService.getPager(this.rowData.length, page, this.rowsPerPage);
     this.pagedItems = this.allPagedItems.slice(this.pager.startIndex, this.pager.endIndex + 1);
+  }
+
+  discardChanges(rowNumber: number) {
+
   }
 
   tableValueChanged(rowNumber: number, colNumber: number, $event: any): void {
