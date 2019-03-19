@@ -15,7 +15,7 @@
           <lib-my-table-cell 
             [cellType]="column.cellType" 
             [initialValue]="row[colNumber]" 
-            (cellValueChange)='tableValueChanged(rowNumber, colNumber, $event)' 
+            (cellValueChange)='tableValueChanged(row[0], colNumber, $event)' 
             [isReadOnly]='column.isReadOnly' 
             [additionalValues]='column.additionalValues'
             [isEditMode]="isEditMode">
@@ -25,7 +25,7 @@
           <lib-my-table-cell 
             [cellType]="column.cellType" 
             [initialValue]="row[colNumber]" 
-            (cellValueChange)='tableValueChanged(rowNumber, colNumber, $event)' 
+            (cellValueChange)='tableValueChanged(row[0], colNumber, $event)' 
             [isReadOnly]='column.isReadOnly' 
             [additionalValues]='column.additionalValues'
             [isEditMode]="isEditMode">
