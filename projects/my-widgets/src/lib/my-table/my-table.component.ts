@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { MyTableColumn } from './my-table-column';
 import { Observable, Subject, of } from 'rxjs';
-import { debounceTime, distinctUntilChanged, switchMap, filter } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, switchMap, filter, catchError } from 'rxjs/operators';
 import { PagerService } from '../pager.service';
 
 @Component({
@@ -82,13 +82,13 @@ export class MyTableComponent implements OnInit, OnChanges {
 
 
   ngOnInit() {
+    // TODO: errors
     this.displayedRowData$ = this.searchTerms.pipe(
       debounceTime(300),
       distinctUntilChanged(),
       switchMap((term: any) => this.tableDataService(term)),
     );
     this.sortedRowData$ = this.displayedRowData$.pipe(
-      debounceTime(300),
       switchMap((data: any) => this.sortDataService(data)),
     );
     this.sortedRowData$.subscribe(data => {
