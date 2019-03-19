@@ -1,3 +1,6 @@
-<select [(ngModel)]="currentValue">
-  <option *ngFor="let c of dropdownValues" [ngValue]="c"><p>{{c}}</p></option>
-</select>
+<div class="form-group">
+  <select [(ngModel)]="currentValue">
+    <option class="form-control" *ngFor="let c of dropdownValues" [ngValue]="c"><p>{{c}}</p></option>
+  </select>
+</div>
+
