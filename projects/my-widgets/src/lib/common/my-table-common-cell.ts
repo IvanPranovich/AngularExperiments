@@ -1,4 +1,4 @@
-import { Input, Output, EventEmitter, OnInit, OnChanges } from '@angular/core';
+import { Input, Output, EventEmitter, OnInit, OnChanges, SimpleChanges } from '@angular/core';
 
 export class MyTableCommonCell implements OnChanges {
     set currentValue(newValue: any) {
@@ -15,9 +15,12 @@ export class MyTableCommonCell implements OnChanges {
 
     private _currentValue: any;
 
-    ngOnChanges(): void {
+    ngOnChanges(changes: SimpleChanges): void {
         // Dirty fix for initial value
         this._currentValue = this.initialValue;
+        if (changes.initialValue) {
+            this._currentValue = changes.initialValue.currentValue;
+        }
     }
 
     valueChanged(): void {

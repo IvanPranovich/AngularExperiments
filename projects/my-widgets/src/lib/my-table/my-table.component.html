@@ -15,18 +15,18 @@
           <lib-my-table-cell 
             [cellType]="column.cellType" 
             [initialValue]="row[colNumber]" 
-            (cellValueChange)='tableValueChanged(row[0], colNumber, $event)' 
+            (cellValueChange)='tableValueChanged(row[0] - 1, colNumber, $event)' 
             [isReadOnly]='column.isReadOnly' 
             [additionalValues]='column.additionalValues'
             [isEditMode]="isEditMode">
           </lib-my-table-cell>
-          <button *ngIf="rowChanges[row[0]]" class="btn btn-danger" (click)="discardChanges(row[0])">Discard changes</button>
+          <button *ngIf="rowChanges[row[0] - 1]" class="btn btn-danger" (click)="discardChanges(row[0] - 1)">Discard changes</button>
         </th>
         <td *ngIf="colNumber !== 0" >
           <lib-my-table-cell 
             [cellType]="column.cellType" 
             [initialValue]="row[colNumber]" 
-            (cellValueChange)='tableValueChanged(row[0], colNumber, $event)' 
+            (cellValueChange)='tableValueChanged(row[0] - 1, colNumber, $event)' 
             [isReadOnly]='column.isReadOnly' 
             [additionalValues]='column.additionalValues'
             [isEditMode]="isEditMode">

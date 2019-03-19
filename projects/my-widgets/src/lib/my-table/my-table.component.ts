@@ -20,6 +20,7 @@ export class MyTableComponent implements OnInit, OnChanges {
   isSearchCaption: boolean[];
   rowChanges: boolean[];
   cellChanges: [boolean[]];
+  cellChangeValues: [any[]];
   private allPagedItems: any[];
   private rowData: any[];
   private currentSearchTerms: { [id: number]: string; } = {};
@@ -82,7 +83,6 @@ export class MyTableComponent implements OnInit, OnChanges {
     return of(result);
   }
 
-
   ngOnInit() {
     this.displayedRowData$ = this.searchTerms.pipe(
       debounceTime(300),
@@ -117,6 +117,18 @@ export class MyTableComponent implements OnInit, OnChanges {
     } else {
       if (this.rowData && this.rowData.length !== this.isSearchCaption.length) {
         this.isSearchCaption = new Array<boolean>(this.rowData.length);
+      }
+    }
+    if (this.rowData && this.columns && this.rowData.length > 0 && this.columns.length > 0 &&
+      (!this.cellChanges || !this.cellChangeValues ||
+        this.rowData.length !== this.cellChanges.length - 1 || this.columns.length !== this.cellChanges[0].length)) {
+      this.cellChanges = [[]];
+      this.cellChangeValues = [[]];
+      for (let i = 0; i < this.rowData.length; i++) {
+        const row = new Array<boolean>(this.columns.length);
+        const rowValues = new Array<any>(this.columns.length);
+        this.cellChanges.push(row);
+        this.cellChangeValues.push(rowValues);
       }
     }
     if (!this.rowChanges) {
@@ -192,11 +204,30 @@ export class MyTableComponent implements OnInit, OnChanges {
   }
 
   discardChanges(rowNumber: number) {
-
+    this.rowChanges[rowNumber] = false;
+    for (let i = 0; i < this.columns.length; i++) {
+      this.rowChanges[rowNumber] = false;
+    }
+    this.searchTerms.next();
   }
 
   tableValueChanged(rowNumber: number, colNumber: number, $event: any): void {
-      console.log('TODO: Changed value' + rowNumber + colNumber + $event);
-      this.rowChanges[rowNumber] = true;
+    if (this.rowData[rowNumber][colNumber] !== $event) {
+      this.cellChanges[rowNumber][colNumber] = true;
+      this.cellChangeValues[rowNumber][colNumber] = $event;
+    } else {
+      this.cellChanges[rowNumber][colNumber] = false;
+    }
+    this.checkChangesInRow(rowNumber);
+  }
+
+  checkChangesInRow(rowNumber: number) {
+    for (let i = 0; i < this.columns.length; i++) {
+      if (this.cellChanges[rowNumber][i]) {
+        this.rowChanges[rowNumber] = true;
+        return;
+      }
+    }
+    this.rowChanges[rowNumber] = false;
   }
 }

@@ -1,11 +1,11 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
 
 @Component({
   selector: 'lib-my-table-cell',
   templateUrl: './my-table-cell.component.html',
   styleUrls: ['./my-table-cell.component.css']
 })
-export class MyTableDataComponent implements OnInit {
+export class MyTableDataComponent implements OnInit, OnChanges {
   @Input() cellType: string;
   @Input() additionalValues: any;
   @Input() initialValue: any;
@@ -17,6 +17,12 @@ export class MyTableDataComponent implements OnInit {
   }
 
   ngOnInit() {
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.initialValue) {
+      this.initialValue = changes.initialValue.currentValue;
+    }
   }
 
   cellValueChanged($event: any): void {
